@@ -10,6 +10,7 @@ def main():
 
 
 def mainMenu():
+  finalList.clear()
   print("Hi, Welcome to Hangman!")
   checkRules = input("Would you like to hear the rules? ")
   if checkRules.lower() == "yes" or checkRules.lower() == "y":
@@ -34,13 +35,14 @@ def mainMenu():
   gameCheck = ["video games", "v", "vg", "video", "games", "game"]
   filmCheck = ["film", "f"]
   musicCheck = ["music", "m", "musician"]
+  wordList = []
   if genreType.lower() in gameCheck:
     wordFile = open("games.txt", "r")
     wordList = wordFile.readlines()
 
     for i in wordList:
       finalList.append(i.replace("\n", ""))
-    print(finalList)
+   # print(finalList)
   elif genreType.lower() in filmCheck:
     wordFile = open("film.txt", "r")
     wordList = wordFile.readlines()
@@ -63,6 +65,7 @@ def mainMenu():
   elif gameType.lower() == "p":
     autoPlay()
 
+
 def pvpPlay():
   P1Turn = True
   selectedWord = random.choice(finalList)
@@ -83,7 +86,7 @@ def pvpPlay():
       guess = input("Enter your Guess: ")
       guess = guess.strip()
       print("Invalid Input")
-      
+
     if (guess in guessedLetters):
       guessedLetters.append(guess)
     elif guess in selectedWord:
@@ -157,6 +160,7 @@ def AiPlay():
   playAgain = input("Would you like to play again? y/n")
   if (playAgain == 'y'):
     mainMenu()
+
 
 def autoPlay():
   print("AUTOPLAY")
