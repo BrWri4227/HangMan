@@ -10,7 +10,7 @@ def main():
 
 
 def mainMenu():
-  finalList.clear()
+  global finalList
   print("Hi, Welcome to Hangman!")
   checkRules = input("Would you like to hear the rules? ")
   if checkRules.lower() == "yes" or checkRules.lower() == "y":
@@ -33,30 +33,25 @@ def mainMenu():
     "What genre would you like to play? (Video Games(V), Film(F), Musicians(M)"
   )
   gameCheck = ["video games", "v", "vg", "video", "games", "game"]
-  filmCheck = ["film", "f"]
+  filmCheck = ["film", "f", "movie"]
   musicCheck = ["music", "m", "musician"]
-  wordList = []
   if genreType.lower() in gameCheck:
-    wordFile = open("games.txt", "r")
-    wordList = wordFile.readlines()
-
-    for i in wordList:
-      finalList.append(i.replace("\n", ""))
-   # print(finalList)
+    finalList = [
+      "hotline miami", "the walking dead", "hollow knight", "sally face",
+      "fran bow", "fortnite", "detroit become human", "the last of us",
+      "life is strange", "valorant", "league of legends"
+    ]
   elif genreType.lower() in filmCheck:
-    wordFile = open("film.txt", "r")
-    wordList = wordFile.readlines()
-
-    for i in wordList:
-      finalList.append(i.replace("\n", ""))
-    # print(finalList)
+    finalList = [
+      "batman", "bullet train", "coraline",
+      "everything everywhere all at once", "the joker", "fight club",
+      "american psycho"
+    ]
   elif genreType.lower() in musicCheck:
-    wordFile = open("music.txt", "r")
-    wordList = wordFile.readlines()
-
-    for i in wordList:
-      finalList.append(i.replace("\n", ""))
-    # print(finalList)
+    finalList = [
+      "radiohead", "paramore", "placebo", "mcr", "kendrick lamar",
+      "have a nice life", "my bloody valentine", "the cure", "elliot smith"
+    ]
 
   if gameType.lower() == "h":
     pvpPlay()
@@ -66,39 +61,151 @@ def mainMenu():
     autoPlay()
 
 
+# def pvpPlay():
+#   P1Turn = True
+#   selectedWord = random.choice(finalList)
+#   guessedLetters = []
+#   guessesLeft = 7
+#   # print(selectedWord + "\n")
+#   output = ""
+#   for i in range(0, len(selectedWord)):
+#     output += "_"
+#   print(output)
+#   while (guessesLeft > 0):
+#     if (P1Turn):
+#       guess = input("Player 1, Enter your Guess: ")
+#     else:
+#       guess = input("Player 2, Enter your Guess: ")
+#     guess = guess.strip()
+#     while (len(guess) == 0 or len(guess) > 1):
+#       guess = input("Enter your Guess: ")
+#       guess = guess.strip()
+#       print("Invalid Input")
+
+#     if (guess in guessedLetters):
+#       guessedLetters.append(guess)
+#     elif guess in selectedWord:
+#       P1Turn = not P1Turn
+#       index = selectedWord.find(guess)
+#       selectedWord = selectedWord[:index] + "_" + selectedWord[index + 1:]
+#       output = output[:index] + guess + output[index + 1:]
+#       print(output + "\n")
+#       if selectedWord == '_' * len(selectedWord) and P1Turn:
+#         print("Congrats! Player 2, you win!")
+#         break
+#       elif selectedWord == '_' * len(selectedWord) and not P1Turn:
+#         print("Congrats! Player 1, you win!")
+#         break
+#     else:
+#       P1Turn = not P1Turn
+#       guessesLeft -= 1
+#       print("Wrong Guess! " + str(guessesLeft) + " guesses left\n")
+#   if guessesLeft == 0:
+#     print("Out of Guesses! You Lose!")
+#   playAgain = input("Would you like to play again? y/n")
+#   if (playAgain == 'y'):
+#     mainMenu()
+
+# def pvpPlay():
+#   P1Turn = True
+#   selectedWord = random.choice(finalList)
+#   guessedLetters = []
+#   guessesLeft = 7
+#   # print(selectedWord + "\n")
+#   output = ""
+#   for i in range(0, len(selectedWord)):
+#     if selectedWord[i] == ' ':
+#       output += ' '
+#     else:
+#       output += "_"
+#   print(output)
+#   while (guessesLeft > 0):
+#     if (P1Turn):
+#       guess = input("Player 1, Enter your Guess: ")
+#     else:
+#       guess = input("Player 2, Enter your Guess: ")
+#     guess = guess.strip()
+#     while (len(guess) != 1 and guess != ' '):
+#       print("Invalid Input")
+#       guess = input("Enter your Guess: ")
+#       guess = guess.strip()
+
+#     if (guess in guessedLetters):
+#       guessedLetters.append(guess)
+#     elif guess in selectedWord:
+#       P1Turn = not P1Turn
+#       index = selectedWord.find(guess)
+#       selectedWord = selectedWord[:index] + "_" + selectedWord[index + 1:]
+#       output = output[:index] + guess + output[index + 1:]
+#       print(output + "\n")
+#       print(selectedWord)
+#       if '_' not in output and P1Turn:
+#         print("Congrats! Player 2, you win!")
+#         break
+#       elif '_' not in output and not P1Turn:
+#         print("Congrats! Player 1, you win!")
+#         break
+#     elif guess == ' ' and ' ' in selectedWord:
+#       P1Turn = not P1Turn
+#       index = selectedWord.find(guess)
+#       selectedWord = selectedWord[:index] + "_" + selectedWord[index + 1:]
+#       output = output[:index] + ' ' + output[index + 1:]
+#       print(output + "\n")
+#     else:
+#       P1Turn = not P1Turn
+#       guessesLeft -= 1
+#       print("Wrong Guess! " + str(guessesLeft) + " guesses left\n")
+#   if guessesLeft == 0:
+#     print("Out of Guesses! You Lose!")
+#   playAgain = input("Would you like to play again? y/n")
+#   if (playAgain == 'y'):
+#     mainMenu()
+
+
 def pvpPlay():
   P1Turn = True
-  selectedWord = random.choice(finalList)
   guessedLetters = []
   guessesLeft = 7
-  # print(selectedWord + "\n")
   output = ""
-  for i in range(0, len(selectedWord)):
-    output += "_"
+  word = random.choice(finalList)
+  for i in range(0, len(word)):
+    if word[i] == ' ':
+      output += ' '
+    else:
+      output += "_"
   print(output)
   while (guessesLeft > 0):
     if (P1Turn):
-      guess = input("Player 1, Enter your Guess: ")
+      while True:
+        guess = input("Player 1, Enter your Guess: ")
+        guess = guess.strip()
+        if (len(guess) != 0 and len(guess) == 1
+            and guess not in guessedLetters):
+          break
+        else:
+          print("Invalid Input (Invalid Length or Already Guessed)")
+      # guess = input("Player 1, Enter your Guess: ")
     else:
-      guess = input("Player 2, Enter your Guess: ")
+      while True:
+        guess = input("Player 2, Enter your Guess: ")
+        guess = guess.strip()
+        if (len(guess) != 0 and len(guess) == 1
+            and guess not in guessedLetters):
+          break
+        else:
+          print("Invalid Input (Invalid Length or Already Guessed)")
     guess = guess.strip()
-    while (len(guess) == 0 or len(guess) > 1):
-      guess = input("Enter your Guess: ")
-      guess = guess.strip()
-      print("Invalid Input")
-
-    if (guess in guessedLetters):
-      guessedLetters.append(guess)
-    elif guess in selectedWord:
+    guessedLetters.append(guess)
+    if guess in word:
       P1Turn = not P1Turn
-      index = selectedWord.find(guess)
-      selectedWord = selectedWord[:index] + "_" + selectedWord[index + 1:]
-      output = output[:index] + guess + output[index + 1:]
+      for i in range(len(word)):
+        if word[i] == guess:
+          output = output[:i] + guess + output[i + 1:]
       print(output + "\n")
-      if selectedWord == '_' * len(selectedWord) and P1Turn:
+      if "_" not in output and P1Turn:
         print("Congrats! Player 2, you win!")
         break
-      elif selectedWord == '_' * len(selectedWord) and not P1Turn:
+      elif "_" not in output and not P1Turn:
         print("Congrats! Player 1, you win!")
         break
     else:
@@ -116,39 +223,44 @@ def AiPlay():
   P1Turn = True
   alphabet = list(string.ascii_lowercase)
   # print(alphabet)
-  selectedWord = random.choice(finalList)
+  word = random.choice(finalList)
   guessedLetters = []
   guessesLeft = 7
   # print(selectedWord + "\n")
   output = ""
-  for i in range(0, len(selectedWord)):
-    output += "_"
+  for i in range(0, len(word)):
+    if word[i] == ' ':
+      output += ' '
+    else:
+      output += "_"
   print(output)
   while (guessesLeft > 0):
     if (P1Turn):
-      guess = input("Player 1, Enter your Guess: ")
+      while True:
+        guess = input("Player 1, Enter your Guess: ")
+        guess = guess.strip()
+        if (len(guess) != 0 and len(guess) == 1
+            and guess not in guessedLetters):
+          break
+        else:
+          print("Invalid Input (Invalid Length or Already Guessed)")
     else:
       guess = random.choice(alphabet)
-      alphabet.remove(guess)
       print("AI guesses " + guess + "\n")
-      time.sleep(2)
+      time.sleep(1)
     guess = guess.strip()
     P1Turn = not P1Turn
-    while (len(guess) == 0 or len(guess) > 1):
-      guess = input("Enter your Guess: ")
-      guess = guess.strip()
-      print("Invalid Input")
-    if (guess in guessedLetters):
-      guessedLetters.append(guess)
-    elif guess in selectedWord:
-      index = selectedWord.find(guess)
-      selectedWord = selectedWord[:index] + "_" + selectedWord[index + 1:]
-      output = output[:index] + guess + output[index + 1:]
+    guessedLetters.append(guess)
+    alphabet.remove(guess)
+    if guess in word:
+      for i in range(len(word)):
+        if word[i] == guess:
+          output = output[:i] + guess + output[i + 1:]
       print(output + "\n")
-      if selectedWord == '_' * len(selectedWord) and P1Turn:
+      if "_" not in output and P1Turn:
         print("Congrats! Player 2, you win!")
         break
-      elif selectedWord == '_' * len(selectedWord) and not P1Turn:
+      elif "_" not in output and not P1Turn:
         print("Congrats! Player 1, you win!")
         break
     else:
@@ -163,43 +275,38 @@ def AiPlay():
 
 
 def autoPlay():
-  print("AUTOPLAY")
+  print("==========AUTOPLAY==========")
+  guessCount = 0
   alphabet = list(string.ascii_lowercase)
-
-  selectedWord = random.choice(finalList)
-  guessedLetters = []
-  guessesLeft = 7
-  print(selectedWord + "\n")
+  word = random.choice(finalList)
+  guessesLeft = 1
+  print("The word the AI is trying to guess is: " + word + "\n")
   output = ""
-  for i in range(0, len(selectedWord)):
-    output += "_"
+  for i in range(0, len(word)):
+    if word[i] == ' ':
+      output += ' '
+    else:
+      output += "_"
   print(output)
   while (guessesLeft > 0):
-
     guess = random.choice(alphabet)
     alphabet.remove(guess)
     print("AI guesses " + guess + "\n")
-    time.sleep(2)
+    guessCount += 1
+    time.sleep(1.5)
     guess = guess.strip()
-    while (len(guess) == 0 or len(guess) > 1):
-      guess = input("Enter your Guess: ")
-      guess = guess.strip()
-      print("Invalid Input")
-    if (guess in guessedLetters):
-      guessedLetters.append(guess)
-    elif guess in selectedWord:
-      index = selectedWord.find(guess)
-      selectedWord = selectedWord[:index] + "_" + selectedWord[index + 1:]
-      output = output[:index] + guess + output[index + 1:]
+    if guess in word:
+      for i in range(len(word)):
+        if word[i] == guess:
+          output = output[:i] + guess + output[i + 1:]
       print(output + "\n")
-      if selectedWord == '_' * len(selectedWord):
-        print("The AI has solved the word!")
+      if "_" not in output:
+        print("Congrats! The AI has solved the word!\n It took: " +
+              guessCount + "guesses!")
         break
     else:
-      guessesLeft -= 1
-      print("Wrong Guess! " + str(guessesLeft) + " guesses left\n")
-  if guessesLeft == 0:
-    print("Out of Guesses! The AI was unable to solve the word")
+      print("Wrong Guess!\n")
+      print(output + "\n\n")
   playAgain = input("Would you like to play again? y/n")
   if (playAgain == 'y'):
     mainMenu()
