@@ -302,7 +302,7 @@ def autoPlay():
       print(output + "\n")
       if "_" not in output:
         print("Congrats! The AI has solved the word!\n It took: " +
-              guessCount + "guesses!")
+              str(guessCount) + "guesses!")
         break
     else:
       print("Wrong Guess!\n")
